@@ -1,0 +1,18 @@
+sepr
+  var N
+  var K
+end
+line K
+  sepr
+    var x
+    var y
+  end
+end
+
+===
+
+N: [2000, 2001]
+K: [100000, 100001]
+x: [1, N+1]
+y: [1, N+1]
+
