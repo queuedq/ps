@@ -1,0 +1,10 @@
+var N K
+sepr N
+  var pref
+end
+
+===
+
+N: [500, 501]
+K: [3, 4]
+pref: [0, 1000001]

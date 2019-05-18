@@ -1,0 +1,18 @@
+var T
+line T
+  sepr
+    var R
+    var C
+  end
+  line R
+    seqn C
+      char BW
+    end
+  end
+end
+
+===
+
+T: [1, 2]
+R: [6, 9]
+C: [6, 9]

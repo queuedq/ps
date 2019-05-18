@@ -1,0 +1,16 @@
+var T
+line T
+  sepr
+    var D
+    hvar P
+    seqn P
+      char SC
+    end
+  end
+end
+
+===
+
+T: [10, 11]
+D: [1, 1e3+1]
+P: [15, 31]
