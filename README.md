@@ -8,7 +8,7 @@
 
 ### 4월
 
-- [Google Code Jam](Google\ Code\ Jam/2019)
+- [Google Code Jam](Google%20Code%20Jam/2019)
   - Round 1B: 615등
   - Round 2: 1475등
 
