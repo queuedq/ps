@@ -1,3 +1,9 @@
+*
+!/**/
+!*.*
+
+unsolved-*
+
 
 # Created by https://www.gitignore.io/api/macOS,python
 
@@ -7,7 +13,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
