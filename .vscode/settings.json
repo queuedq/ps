@@ -4,6 +4,8 @@
     "*.sage": "python",
     "ios": "cpp",
     "algorithm": "cpp",
-    "vector": "cpp"
+    "vector": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp"
   }
 }
