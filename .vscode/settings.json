@@ -7,6 +7,8 @@
     "vector": "cpp",
     "iostream": "cpp",
     "istream": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "random": "cpp",
+    "utility": "cpp"
   }
 }
