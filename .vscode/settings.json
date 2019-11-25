@@ -9,6 +9,7 @@
     "istream": "cpp",
     "string": "cpp",
     "random": "cpp",
-    "utility": "cpp"
+    "utility": "cpp",
+    "set": "cpp"
   }
 }
