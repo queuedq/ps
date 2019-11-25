@@ -81,22 +81,19 @@ int getM(int i) {
   return result;
 }
 
-
 int sweep() {
   int result = INT_MAX;
   int pos = 0;
   for (int i = 0; i <= N; i++) {
-    int u = 0, d = N;
-    while (u + 1 < d) {
-      int m = (u + d) / 2;
-      int l = LF.query(N - 1), lu = LF.query(m - 1);
-      int r = RF.query(N - 1), ru = RF.query(m - 1);
-      if (max(lu, ru) <= max(l - lu, r - ru)) u = m;
-      else d = m;
+    int l = 0, r = N;
+    while (r - l >= 3) {
+      int ml = (l*2 + r) / 3, mr = (l + r*2)/3;
+      if (getM(ml) <= getM(mr)) r = mr;
+      else l = ml;
     }
-
-    result = min(result, getM(u));
-    if (u < N) result = min(result, getM(u+1));
+    for (int t = l; t <= r; t++) {
+      result = min(result, getM(t));
+    }
     // cout << LF.query(N) << "/" << RF.query(N) << endl;
 
     while (pos < N && P[pos].first == i) {
