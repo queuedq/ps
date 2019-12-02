@@ -35,6 +35,7 @@ int scc(int here) {
 
 vector<int> tarjan() {
   sccId = discovered = vector<int>(adj.size(), -1);
+  st = stack<int>();
   sccCnt = vertexCnt = 0;
   for (int i = 1; i < adj.size(); i++) {
     if (discovered[i] == -1) scc(i);
