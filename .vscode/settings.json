@@ -10,6 +10,22 @@
     "string": "cpp",
     "random": "cpp",
     "utility": "cpp",
-    "set": "cpp"
+    "set": "cpp",
+    "stack": "cpp",
+    "__hash_table": "cpp",
+    "__split_buffer": "cpp",
+    "__tree": "cpp",
+    "array": "cpp",
+    "bitset": "cpp",
+    "deque": "cpp",
+    "initializer_list": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "queue": "cpp",
+    "regex": "cpp",
+    "string_view": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "valarray": "cpp"
   }
 }
