@@ -27,6 +27,8 @@
     "unordered_map": "cpp",
     "unordered_set": "cpp",
     "valarray": "cpp",
-    "iomanip": "cpp"
+    "iomanip": "cpp",
+    "type_traits": "cpp",
+    "complex": "cpp"
   }
 }
