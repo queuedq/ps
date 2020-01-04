@@ -1,15 +1,6 @@
-#include <bits/stdc++.h>
-#define endl "\n"
-using namespace std;
-typedef long long lld;
-typedef pair<int, int> pii;
-typedef pair<lld, lld> pll;
+#include "template.cc"
 
-///////
-
-struct Point {
-  lld x, y;
-};
+struct Point { lld x, y; };
 bool operator<(Point a, Point b) { return (pll){a.x, a.y} < (pll){b.x, b.y}; }
 bool operator==(Point a, Point b) { return a.x == b.x && a.y == b.y; }
 Point operator+(Point a, Point b) { return {a.x + b.x, a.y + b.y}; }

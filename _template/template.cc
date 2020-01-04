@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 #define endl "\n"
 using namespace std;
-typedef long long lld;
-typedef pair<int, int> pii;
-typedef pair<lld, lld> pll;
+using lld = long long;
+using pii = pair<int, int>;
+using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
 
