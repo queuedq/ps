@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-template<typename T>
+template<class T>
 ostream& operator << (ostream& os, vector<T> vec) {
   os << "{";
   if (vec.size() > 0) {
@@ -12,7 +12,7 @@ ostream& operator << (ostream& os, vector<T> vec) {
   return os;
 }
 
-template<typename T>
+template<class T>
 string arrToStr(T arr[], int size) {
 	ostringstream os;
   os << "[";
