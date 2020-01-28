@@ -94,6 +94,7 @@
     "typeinfo": "cpp",
     "variant": "cpp",
     "cuchar": "cpp",
-    "memory_resource": "cpp"
+    "memory_resource": "cpp",
+    "filesystem": "cpp"
   }
 }
