@@ -32,11 +32,11 @@ void input() {
 
 lld outer(Point a, Point b) { return a.x * b.y - a.y * b.x; }
 lld ccw(Point a, Point b, Point c) { return outer(b - a, c - a); }
-lld dist(Point a) { return a * a; }
+lld dist(Point a, Point b) { return (a - b) * (a - b); }
 
 bool polarCmp(Point a, Point b) {
   lld theta = ccw(P0, a, b);
-  if (theta == 0) { return dist(a) < dist(b); }
+  if (theta == 0) { return dist(a, P0) < dist(b, P0); }
   return theta > 0;
 }
 
@@ -49,7 +49,7 @@ void hull() {
   vector<Point> Q;
   Q.push_back(P0);
   for (int i = 1; i < P.size(); i++) {
-    while (i < P.size()-1 && ccw(P0, P[i], P[i + 1]) == 0) { i++; }
+    while (i < P.size()-1 && ccw(P0, P[i], P[i+1]) == 0) { i++; }
     Q.push_back(P[i]);
   }
 
