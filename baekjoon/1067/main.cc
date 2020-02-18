@@ -1,5 +1,11 @@
-#include "template.cc"
+#include <bits/stdc++.h>
+#define endl "\n"
+using namespace std;
+using lld = long long;
+using pii = pair<int, int>;
+using pll = pair<lld, lld>;
 
+////////////////////////////////////////////////////////////////
 using cpx = complex<double>;
 const double PI = acos(-1);
 
@@ -52,3 +58,32 @@ vector<cpx> multiply(vector<cpx> a, vector<cpx> b) {
 }
 
 int cpxToInt(cpx z) { return (int)round(z.real()); }
+
+////////////////////////////////
+int N;
+vector<cpx> x, y;
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ////////////////////////////////
+
+  cin >> N;
+  x.resize(N); y.resize(N);
+  for (int i = 0; i < N; i++) { cin >> x[i]; }
+  for (int i = 0; i < N; i++) { cin >> y[i]; }
+
+  reverse(y.begin(), y.end());
+  for (int i = 0; i < N; i++) { y.push_back(y[i]); }
+
+  vector<cpx> z = multiply(x, y);
+
+  int ans = 0;
+  for (int i = 0; i < N; i++) {
+    ans = max(ans, cpxToInt(z[i+N]));
+  }
+  cout << ans << endl;
+
+  ////////////////////////////////
+  return 0;
+}
