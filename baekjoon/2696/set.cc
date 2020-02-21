@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+#define endl "\n"
+using namespace std;
+using lld = long long;
+using pii = pair<int, int>;
+using pll = pair<lld, lld>;
+
+////////////////////////////////////////////////////////////////
+
+int main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  ////////////////////////////////
+
+  int T; cin >> T;
+  while (T--) {
+    int M; cin >> M;
+    vector<int> A(M);
+    for (int i = 0; i < M; i++) cin >> A[i];
+
+    cout << M/2+1 << endl;
+
+    set<pii> S;
+    S.insert({A[0], 0});
+    auto mid = S.begin();
+    cout << mid->first;
+
+    for (int i = 1; i < M;) {
+      int d = 0;
+
+      d += pii(A[i], i) > *mid ? 1 : -1;
+      S.insert({A[i], i});
+      i++;
+      d += pii(A[i], i) > *mid ? 1 : -1;
+      S.insert({A[i], i});
+      i++;
+
+      if (d > 0) mid++;
+      if (d < 0) mid--;
+
+      cout << (i%20 == 1 ? "\n" : " ") << mid->first;
+    }
+
+    cout << endl;
+  }
+
+  ////////////////////////////////
+  return 0;
+}
