@@ -1,43 +1,60 @@
 #include "template.cc"
 
-template<class T>
-int compress(vector<T> coords, int x) {
+int compress(vector<int> coords, int x) {
   return lower_bound(coords.begin(), coords.end(), x) - coords.begin();
 }
 
+// range max query + range addition
+struct SegTree {
+  vector<int> seg, lazy; // lazy: lazy only
+  int size;
 
-class SegTree {
-public:
-  vector<lld> arr;
-  static int start;
-
-  SegTree(int size) {
-    int arrSize = 1;
-    while (arrSize < size * 2) { arrSize <<= 1; }
-    arr.resize(arrSize);
-    start = arrSize / 2;
+  SegTree(int sz) {
+    size = 1 << (int)ceil(log2(sz));
+    seg.resize(size*2);
+    lazy.resize(size*2);
   }
 
-  void reset() { fill(arr.begin(), arr.end(), 0); }
+  // lazy only
+  void propagate(int n, int nl, int nr) {
+    seg[n] += lazy[n]; // times (nr-nl) when range sum query
+    if (n < size) {
+      lazy[n*2] += lazy[n];
+      lazy[n*2+1] += lazy[n];
+    }
+    lazy[n] = 0;
+  }
 
-  void update(int pos, int value) {
-    int node = start + pos;
-    arr[node] = value;
-    while (node > 1) {
-      node /= 2;
-      arr[node] = arr[node*2] + arr[node*2+1];
+  // non-lazy only
+  void update(int i, int val) {
+    int n = size + i;
+    seg[n] = val;
+    while (n > 1) {
+      n >>= 1;
+      seg[n] = max(seg[n*2], seg[n*2+1]);
     }
   }
 
-  lld query(int l, int r) { return query(1, 0, start, l, r); }
-  lld query(int node, int nl, int nr, int l, int r) {
+  void update_range(int l, int r, int val) { update_range(1, 0, size, l, r, val); }
+  void update_range(int n, int nl, int nr, int l, int r, int val) {
+    propagate(n, nl, nr);
+    if (nr <= l || r <= nl) return;
+    if (l <= nl && nr <= r) { lazy[n] += val; return propagate(n, nl, nr); }
+    int mid = (nl+nr)/2;
+    update_range(n*2, nl, mid, l, r, val);
+    update_range(n*2+1, mid, nr, l, r, val);
+    seg[n] = max(seg[n*2], seg[n*2+1]);
+  }
+
+  int query(int l, int r) { return query(1, 0, size, l, r); }
+  int query(int n, int nl, int nr, int l, int r) {
+    propagate(n, nl, nr); // lazy only
     if (nr <= l || r <= nl) return 0;
-    if (l <= nl && nr <= r) return arr[node];
-    int mid = (nl + nr) / 2;
-    return query(node*2, nl, mid, l, r) + query(node*2+1, mid, nr, l, r);
+    if (l <= nl && nr <= r) return seg[n];
+    int mid = (nl+nr)/2;
+    return max(query(n*2, nl, mid, l, r), query(n*2+1, mid, nr, l, r));
   }
 } seg(100'000);
-
 
 class Fenwick {
 public:
