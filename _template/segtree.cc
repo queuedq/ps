@@ -65,20 +65,14 @@ public:
   void reset() { fill(arr.begin(), arr.end(), 0); }
 
   lld query(int i) {
-    i++; // Query index should be > 0
+    i++; // with: sum {<= i} / without: sum {< i}
     int s = 0;
-    while (i > 0) {
-      s += arr[i];
-      i -= i & -i;
-    }
+    while (i > 0) { s += arr[i]; i -= i & -i; }
     return s;
   }
 
   void update(int i, int val) {
-    i++;
-    while (i < arr.size()) {
-      arr[i] += val;
-      i += i & -i;
-    }
+    i++; // to make i > 0
+    while (i < arr.size()) { arr[i] += val; i += i & -i; }
   }
-} fenwick(100'000);
+} bit(100'000);
