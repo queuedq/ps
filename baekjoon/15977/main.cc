@@ -34,7 +34,38 @@ void solve3() {
   for (int i=0; i<N; i++) cin >> A[i].second.second;
   sort(A.begin(), A.end());
 
-  // TODO
+  vector<set<pii>> S;
+  for (int i=0; i<N; i++) {
+    auto [x, y] = A[i].second;
+
+    int l = -1, r = S.size();
+    while (l+1 < r) {
+      int mid = (l+r)/2;
+      auto it = S[mid].lower_bound({x, y});
+      if (it == S[mid].begin() || prev(it)->second > y) r = mid;
+      else l = mid;
+    }
+
+    if (r < S.size()) {
+      auto it = S[r].lower_bound({x, y});
+      if (it != S[r].begin() && prev(it)->second < y) continue;
+
+      while (it != S[r].end() && it->second > y) {
+        it++; // Avoid iterator invalidation
+        S[r].erase(prev(it));
+      }
+    } else {
+      S.push_back(set<pii>());
+    }
+
+    S[r].insert({x, y});
+  }
+
+  cout << S.size() << endl;
+  // for (int i=0; i<S.size(); i++) {
+  //   for (auto [x, y]: S[i]) cout << x << " " << y << " | ";
+  //   cout << endl;
+  // }
 }
 
 ////////////////////////////////
