@@ -29,25 +29,15 @@ int main() {
   for (int i=0; i<N; i++) {
     for (int j=0; j<i; j++) {
       for (int k=0; k<j; k++) {
-        int ij = 0, jk = 0, ki = 0;
-        int ii = 0, jj = 0, kk = 0;
-        int ijk = 0;
+        int ij = 0, jk = 0, ki = 0, c = 0;
         for (int l=0; l<N; l++) {
           if (l == i || l == j || l == k) continue;
-          bool bij = adj[l][i] && adj[l][j];
-          bool bjk = adj[l][j] && adj[l][k];
-          bool bki = adj[l][k] && adj[l][i];
-          if (bij) ij++;
-          if (bjk) jk++;
-          if (bki) ki++;
-          if (bki && bij) ii++;
-          if (bij && bjk) jj++;
-          if (bjk && bki) kk++;
-          if (bij && bjk && bki) ijk++;
+          if (adj[l][i] && adj[l][j]) ij++;
+          if (adj[l][j] && adj[l][k]) jk++;
+          if (adj[l][k] && adj[l][i]) ki++;
+          if (adj[l][i] && adj[l][j] && adj[l][k]) c++;
         }
-        ans = (ans + ij*jk*ki) % MOD;
-        ans = (ans - ii*jk - jj*ki - kk*ij) % MOD;
-        ans = (ans + 2*ijk) % MOD;
+        ans = (ans + ij*jk*ki - c*(jk+ki+ij) + 2*c) % MOD;
       }
     }
   }
