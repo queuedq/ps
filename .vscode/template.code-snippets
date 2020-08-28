@@ -1,6 +1,6 @@
 {
 	"template": {
-		"prefix": "t",
+		"prefix": "tmpl",
 		"body": [
 			"#include <bits/stdc++.h>",
 			"#define endl \"\\n\"",
