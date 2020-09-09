@@ -6,7 +6,7 @@ using pii = pair<int, int>;
 using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
-const int MAXN = 0;
+
 
 int main() {
   ios_base::sync_with_stdio(false);
