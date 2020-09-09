@@ -1,24 +1,20 @@
 #include "template.h"
 
 template<class T>
-ostream& operator << (ostream& os, vector<T> vec) {
-  os << "{";
-  if (vec.size() > 0) {
-    copy(vec.begin(), vec.end() - 1, ostream_iterator<T>(os, ", "));
-    os << *(vec.end() - 1);
-  }
-  os << "}";
+ostream& operator <<(ostream& os, vector<T> vec) {
+  os << "[";
+  for (int i=0; i<vec.size()-1; i++) os << vec[i] << ", ";
+  if (!vec.empty()) os << vec.back();
+  os << "]";
   return os;
 }
 
 template<class T>
-string arrToStr(T arr[], int size) {
+string to_string(T arr[], int size) {
 	ostringstream os;
   os << "[";
-	for (int i = 0; i < size - 1; i++) {
-		os << arr[i] << ",";
-	}
-  os << arr[size - 1] << "]";
-
+	for (int i = 0; i<size-1; i++) os << arr[i] << ",";
+  if (size > 0) os << arr[size-1];
+  os << "]";
 	return os.str();
 }
