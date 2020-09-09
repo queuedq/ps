@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 struct DSU {
   vector<int> parent, size;

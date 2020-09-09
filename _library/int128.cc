@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 using llld = __int128;
 

@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 const int MAXN = 50005;
 int N;

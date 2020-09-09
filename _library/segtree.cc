@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 int compress(vector<int> coords, int x) {
   return lower_bound(coords.begin(), coords.end(), x) - coords.begin();

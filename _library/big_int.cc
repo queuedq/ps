@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 struct BigInt {
   static const int BASE = 1e8;

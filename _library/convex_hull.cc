@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 #include "point.cc"
 
 int N;

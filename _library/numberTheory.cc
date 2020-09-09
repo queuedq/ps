@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 lld gcd(lld a, lld b) {
   while (b > 0) {

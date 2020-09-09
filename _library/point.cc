@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 struct Point { lld x, y; };
 bool operator<(Point a, Point b) { return (pll){a.x, a.y} < (pll){b.x, b.y}; }

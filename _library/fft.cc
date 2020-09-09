@@ -1,4 +1,4 @@
-#include "template.cc"
+#include "template.h"
 
 using cpx = complex<double>;
 const double PI = acos(-1);

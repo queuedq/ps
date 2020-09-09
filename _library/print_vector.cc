@@ -1,5 +1,4 @@
-#include<bits/stdc++.h>
-using namespace std;
+#include "template.h"
 
 template<class T>
 ostream& operator << (ostream& os, vector<T> vec) {
