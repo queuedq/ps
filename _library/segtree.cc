@@ -1,7 +1,9 @@
 #include "template.h"
 
-int compress(vector<int> coords, int x) {
-  return lower_bound(coords.begin(), coords.end(), x) - coords.begin();
+// Coordinate compression
+// Returns 1-based index of x in xs
+int compress(lld x, const vector<lld> &xs) {
+  return lower_bound(xs.begin(), xs.end(), x) - xs.begin() + 1;
 }
 
 // range max query + range addition
@@ -56,23 +58,46 @@ struct SegTree {
   }
 } seg(100'000);
 
-class Fenwick {
-public:
-  vector<lld> arr;
+// Fenwick tree
+// Indices are 1-based
+struct fenwick_tree {
+  vector<lld> A;
 
-  Fenwick(int size) { arr.resize(size); }
+  fenwick_tree(int size) { A.resize(size+1); }
 
-  void reset() { fill(arr.begin(), arr.end(), 0); }
+  void reset() { fill(A.begin(), A.end(), 0); }
 
-  lld query(int i) {
-    i++; // with: sum {<= i} / without: sum {< i}
-    int s = 0;
-    while (i > 0) { s += arr[i]; i -= i & -i; }
+  // Adds x to A[i]
+  void add(int i, lld x) {
+    assert(1 <= i && i <= A.size()-1);
+    for (; i < A.size(); i += i&-i) A[i] += x;
+  }
+
+  // Returns sum of A[1..i]
+  lld sum(int i) {
+    assert(0 <= i && i <= A.size()-1);
+    lld s = 0;
+    for (; i > 0; i -= i&-i) s += A[i];
     return s;
   }
+};
 
-  void update(int i, int val) {
-    i++; // to make i > 0
-    while (i < arr.size()) { arr[i] += val; i += i & -i; }
-  }
-} bit(100'000);
+// Usage
+int main() {
+  // Coordinate compression
+  vector<lld> xs = {2, 3, 5, 7, 11};
+  lld x = 3;
+  lld xi = compress(x, xs);
+  assert(xi == 2);
+  assert(x == xs[xi-1]);
+
+  // Fenwick Tree
+  lld N = 25;
+  fenwick_tree F(N);
+  for (int i=1; i<=10; i++) F.add(i, i);
+  assert(F.sum(0) == 0);
+  assert(F.sum(5) == 15);
+  assert(F.sum(10) == 55);
+
+  return 0;
+}
