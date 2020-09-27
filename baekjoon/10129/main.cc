@@ -14,21 +14,21 @@ struct State {
   int i, height, score;
 };
 
-list<State> mono;
+deque<State> mono;
 
 bool cmp(State a, State b) {
   if (a.score == b.score) { return a.height <= b.height; }
   return a.score > b.score;
 }
 
-void insert(list<State> &mono, State s) {
+void insert(deque<State> &mono, State s) {
   while (!mono.empty() && cmp(mono.back(), s)) {
     mono.pop_back();
   }
   mono.push_back(s);
 }
 
-void roll(list<State> &mono, int start) {
+void roll(deque<State> &mono, int start) {
   if (mono.empty()) { return; }
   if (mono.front().i < start) { mono.pop_front(); }
 }
