@@ -1,0 +1,3 @@
+[submodule "pslib"]
+	path = _lib
+	url = git@github.com:queuedq/pslib.git
