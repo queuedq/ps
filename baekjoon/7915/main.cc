@@ -7,19 +7,7 @@ using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
 const int MAXN = 3e6+5;
-int N;
-vector<int> adj[MAXN];
-
-int dfs(int u, int p, int g, bool &ok) {
-  if (!ok) return 0;
-  int size = 1;
-  for (auto v: adj[u]) {
-    if (v == p) continue;
-    size += dfs(v, u, g, ok);
-  }
-  if (size > g) { ok = false; return 0; }
-  return size % g;
-}
+int N, par[MAXN], sz[MAXN], cnt[MAXN];
 
 int main() {
   ios_base::sync_with_stdio(false);
@@ -27,19 +15,19 @@ int main() {
   ////////////////////////////////
 
   cin >> N;
-  for (int i=1; i<=N-1; i++) {
-    int a; cin >> a;
-    adj[i+1].push_back(a);
-    adj[a].push_back(i+1);
+  for (int i=2; i<=N; i++) cin >> par[i];
+  for (int i=N; i>=1; i--) {
+    sz[i]++;
+    cnt[sz[i]]++;
+    sz[par[i]] += sz[i];
   }
 
   for (int k=1; k<=N; k++) {
     if (N % k) continue;
-    bool ok = true;
-    dfs(1, 0, N/k, ok);
-    if (ok) cout << k << " ";
+    int g = N/k, tot = 0;
+    for (int i=g; i<=N; i+=g) tot += cnt[i];
+    if (tot == k) cout << k << ' ';
   }
-  cout << endl;
 
   ////////////////////////////////
   return 0;
