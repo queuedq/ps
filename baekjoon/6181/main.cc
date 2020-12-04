@@ -23,6 +23,7 @@ struct disjoint_set {
 
   void merge(int x, int y) {
     x = find(x); y = find(y);
+    if (x == y) return;
     if (s[x] < s[y]) swap(x, y);
     p[y] = x;
     s[x] += s[y];
