@@ -18,14 +18,19 @@ int main() {
   for (int i=0; i<N; i++) cin >> m[i];
   for (int i=0; i<N; i++) cin >> c[i];
 
-  int ans = INT_MAX;
-
   D[0][c[0]] = m[0];
   for (int i=1; i<N; i++) {
     for (int j=0; j<MAXC; j++) {
       D[i][j] = D[i-1][j];
       if (j - c[i] >= 0) D[i][j] = max(D[i][j], D[i-1][j-c[i]] + m[i]);
-      if (D[i][j] >= M) ans = min(ans, j);
+    }
+  }
+
+  int ans;
+  for (int j=0; j<MAXC; j++) {
+    if (D[N-1][j] >= M) {
+      ans = j;
+      break;
     }
   }
 
