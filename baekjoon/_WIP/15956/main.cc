@@ -16,22 +16,19 @@ struct disjoint_set {
     }
   }
 
-  // Find the set number containing x
   int find(int x) {
     if (x == p[x]) return x;
     return p[x] = find(p[x]);
   }
 
-  // Merge two sets
-  // Note: "union" is a keyword in C++
   void merge(int x, int y) {
     x = find(x); y = find(y);
+    if (x == y) return;
     if (s[x] < s[y]) swap(x, y);
     p[y] = x;
     s[x] += s[y];
   }
 
-  // Utility functions
   bool same(int x, int y) { return find(x) == find(y); }
   int size(int x) { return s[find(x)]; }
 };
