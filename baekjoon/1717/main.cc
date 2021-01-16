@@ -27,6 +27,7 @@ struct DSU {
 
   void merge(int x, int y) {
     x = find(x); y = find(y);
+    if (x == y) return;
     if (size[x] < size[y]) swap(x, y);
     parent[y] = x;
     size[x] += size[y];
