@@ -1,74 +1,59 @@
 #include <bits/stdc++.h>
 #define endl "\n"
 using namespace std;
-typedef long long lld;
-typedef pair<int, int> pii;
+using lld = long long;
+using pii = pair<int, int>;
+using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
-#define MAX_N 75005
-#define BIT_SIZE MAX_N * 2
-int T, N;
-pii P[MAX_N];
-vector<int> coords;
-int BIT[BIT_SIZE];
+const int MN = 75005;
+const int ST = 1<<17;
+int n, coords[MN], seg[ST*2];
 
-int compress(int x) {
-  return lower_bound(coords.begin(), coords.end(), x) - coords.begin() + 1;
+struct Point {
+  int x, y;
+  bool operator <(const Point &p) const {
+    if (x == p.x) return y > p.y; // larger y-coordinate first
+    return x < p.x;
+  }
+};
+Point A[MN];
+
+void update(int i, int v) {
+  int n = ST+i;
+  for (; n > 0; n /= 2) seg[n] += v;
 }
 
-void add(int i) {
-  assert(i > 0);
-  while (i < BIT_SIZE) {
-    BIT[i]++;
-    i += (i & -i);
-  }
+int query(int n, int nl, int nr, int l, int r) {
+  if (r < nl || nr < l) return 0;
+  if (l <= nl && nr <= r) return seg[n];
+  int mid = (nl+nr+1)/2;
+  return query(n*2, nl, mid-1, l, r) + query(n*2+1, mid, nr, l, r);
 }
 
-int sum(int i) {
-  int sum = 0;
-  while (i > 0) {
-    sum += BIT[i];
-    i -= (i & -i);
-  }
-  return sum;
-}
+void solve() {
+  fill(seg, seg+ST*2, 0); // reset
 
-lld calc() {
-  // Reset
-  coords.clear();
-  fill(BIT, BIT + BIT_SIZE, 0);
-
-  // Input
-  cin >> N;
-  for (int i = 0; i < N; i++) {
-    int x, y;
-    cin >> x >> y;
-    P[i] = {x, -y};
-    coords.push_back(x);
-    coords.push_back(-y);
+  cin >> n;
+  for (int i=0; i<n; i++) {
+    cin >> A[i].x >> A[i].y;
+    coords[i] = A[i].y;
   }
 
-  // Compress & Sort
-  sort(coords.begin(), coords.end());
-  coords.erase(unique(coords.begin(), coords.end()), coords.end());
+  sort(A, A+n);
+  sort(coords, coords+n);
 
-  for (int i = 0; i < N; i++) {
-    // cout << "Orig: " << P[i].first << ", " << P[i].second << endl;
-    P[i].first = compress(P[i].first);
-    P[i].second = compress(P[i].second);
-    // cout << P[i].first << " " << P[i].second << endl;
-  }
-  sort(P, P + N);
-
-  // Calc
-  lld count = 0;
-  for (int i = 0; i < N; i++) {
-    pii point = P[i];
-    count += sum(point.second);
-    add(point.second);
+  for (int i=0; i<n; i++) {
+    A[i].y = lower_bound(coords, coords+n, A[i].y) - coords;
   }
 
-  return count;
+  lld ans = 0;
+  for (int i=0; i<n; i++) {
+    ans += query(1, 0, ST-1, A[i].y, ST-1);
+    update(A[i].y, 1);
+  }
+
+  cout << ans << endl;
 }
 
 int main() {
@@ -76,11 +61,8 @@ int main() {
   cin.tie(nullptr);
   ////////////////////////////////
 
-  cin >> T;
-
-  for (int i = 0; i < T; i++) {
-    cout << calc() << endl;
-  }
+  int T; cin >> T;
+  while (T--) solve();
 
   ////////////////////////////////
   return 0;

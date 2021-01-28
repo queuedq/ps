@@ -13,7 +13,7 @@ int N, M, A[MAXN];
 
 struct Node {
   int l, r, m, s;
-  Node() { l = r = m = s = -INF; }
+  Node() { l = r = m = -INF; s = 0; }
   Node(int l, int r, int m, int s): l(l), r(r), m(m), s(s) {}
 } seg[ST*2];
 
@@ -22,12 +22,12 @@ Node merge(Node x, Node y) {
     max(x.l, x.s+y.l),
     max(y.r, y.s+x.r),
     max({x.m, y.m, x.r+y.l}),
-    max(-INF, x.s+y.s)
+    x.s+y.s
   };
 }
 
 Node query(int n, int nl, int nr, int l, int r) {
-  if (nr < l || r < nl) return {-INF, -INF, -INF, 0};
+  if (nr < l || r < nl) return Node();
   if (l <= nl && nr <= r) return seg[n];
   int mid = (nl+nr+1)/2;
   return merge(query(n*2, nl, mid-1, l, r), query(n*2+1, mid, nr, l, r));

@@ -13,17 +13,13 @@ pii A[MAXN];
 
 struct Query {
   int l, r, k, idx;
-
   bool operator <(const Query q) const { return k > q.k; }
 } Q[MAXN];
 
 void update(int i, int val) {
   int n = ST+i;
   seg[n] = val;
-  while (n > 1) {
-    n >>= 1;
-    seg[n] = seg[n*2] + seg[n*2+1];
-  }
+  for (n /= 2; n >= 1; n /= 2) seg[n] = seg[n*2] + seg[n*2+1];
 }
 
 int query(int n, int nl, int nr, int l, int r) {
@@ -51,7 +47,7 @@ int main() {
   }
 
   sort(A, A+N, greater<pii>());
-  sort(Q, Q+M); // 버그 수정 N -> M. 내 세시간...ㅠㅠ
+  sort(Q, Q+M);
 
   int j = 0;
   for (int i=0; i<M; i++) {
