@@ -7,60 +7,46 @@ using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
 const int MAXN = 1e5+5;
-int N, K;
+int N, K, par[MAXN][20], mn[MAXN][20], mx[MAXN][20], dep[MAXN];
 vector<pii> adj[MAXN];
-pair<int, pii> parent[MAXN][20];
-int depth[MAXN];
 
-void dfs(int u, int p, int d) {
-  depth[u] = d;
-  for (auto [v, w]: adj[u]) {
+void dfs(int u, int p, int w, int d) {
+  par[u][0] = p;
+  mn[u][0] = w;
+  mx[u][0] = w;
+  dep[u] = d;
+  for (auto [v, c]: adj[u]) {
     if (v == p) continue;
-    parent[v][0] = {u, {w, w}};
-    dfs(v, u, d+1);
+    dfs(v, u, c, d+1);
   }
 }
 
-void construct() {
-  for (int d=1; d<20; d++) {
-    for (int i=1; i<=N; i++) {
-      auto [p, w] = parent[i][d-1];
-      auto [pp, ww] = parent[p][d-1];
-      parent[i][d] = {pp, {min(w.first, ww.first), max(w.second, ww.second)}};
+pii lca(int u, int v) {
+  int lo = 1e9, hi = 0;
+
+  if (dep[u] < dep[v]) swap(u, v);
+
+  for (int k=19; k>=0; k--) {
+    if (1 << k <= dep[u] - dep[v]) {
+      lo = min(lo, mn[u][k]);
+      hi = max(hi, mx[u][k]);
+      u = par[u][k];
     }
   }
-}
 
-pair<int, pii> lca(int u, int v) {
-  int mn = 1e9, mx = 0;
+  if (u == v) return {lo, hi};
 
-  if (depth[u] < depth[v]) swap(u, v);
-
-  for (int b=19; b>=0; b--) {
-    if ((1 << b) <= depth[u] - depth[v]) {
-      mn = min(mn, parent[u][b].second.first);
-      mx = max(mx, parent[u][b].second.second);
-      u = parent[u][b].first;
-    }
-  }
-  assert(depth[u] == depth[v]);
-
-  for (int b=19; b>=0; b--) {
-    if (parent[u][b].first == parent[v][b].first) continue;
-    mn = min({mn, parent[u][b].second.first, parent[v][b].second.first});
-    mx = max({mx, parent[u][b].second.second, parent[v][b].second.second});
-    u = parent[u][b].first;
-    v = parent[v][b].first;
+  for (int k=19; k>=0; k--) {
+    if (par[u][k] == par[v][k]) continue;
+    lo = min({lo, mn[u][k], mn[v][k]});
+    hi = max({hi, mx[u][k], mx[v][k]});
+    u = par[u][k];
+    v = par[v][k];
   }
 
-  if (u != v) {
-    mn = min({mn, parent[u][0].second.first, parent[v][0].second.first});
-    mx = max({mx, parent[u][0].second.second, parent[v][0].second.second});
-    u = parent[u][0].first;
-    v = parent[v][0].first;
-  }
-
-  return {u, {mn, mx}};
+  lo = min({lo, mn[u][0], mn[v][0]});
+  hi = max({hi, mx[u][0], mx[v][0]});
+  return {lo, hi};
 }
 
 int main() {
@@ -70,19 +56,26 @@ int main() {
 
   cin >> N;
   for (int i=0; i<N-1; i++) {
-    int a, b, w; cin >> a >> b >> w;
-    adj[a].push_back({b, w});
-    adj[b].push_back({a, w});
+    int a, b, c; cin >> a >> b >> c;
+    adj[a].push_back({b, c});
+    adj[b].push_back({a, c});
   }
 
-  dfs(1, 0, 0);
-  construct();
+  dfs(1, 0, 0, 0);
+
+  for (int k=1; k<20; k++) {
+    for (int i=1; i<=N; i++) {
+      par[i][k] = par[par[i][k-1]][k-1];
+      mn[i][k] = min(mn[i][k-1], mn[par[i][k-1]][k-1]);
+      mx[i][k] = max(mx[i][k-1], mx[par[i][k-1]][k-1]);
+    }
+  }
 
   cin >> K;
   for (int i=0; i<K; i++) {
     int u, v; cin >> u >> v;
-    auto [p, w] = lca(u, v);
-    cout << w.first << " " << w.second << endl;
+    auto [lo, hi] = lca(u, v);
+    cout << lo << " " << hi << endl;
   }
 
   ////////////////////////////////

@@ -7,34 +7,35 @@ using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
 const int MAXN = 1e5+5;
-int N, M;
+int N, M, par[MAXN][20], dep[MAXN];
 vector<int> adj[MAXN];
-int depth[MAXN];
-int anc[20][MAXN];
 
 void dfs(int u, int p, int d) {
-  depth[u] = d;
+  par[u][0] = p;
+  dep[u] = d;
   for (auto v: adj[u]) {
     if (v == p) continue;
-    anc[0][v] = u;
     dfs(v, u, d+1);
   }
 }
 
-int query(int a, int b) {
-  if (depth[a] < depth[b]) swap(a, b);
-  int diff = depth[a] - depth[b];
-  for (int i = 0; diff > 0; i++, diff /= 2) {
-    if (diff & 1) a = anc[i][a];
+int lca(int u, int v) {
+  if (dep[u] < dep[v]) swap(u, v);
+
+  for (int k=19; k>=0; k--) {
+    if (1<<k <= dep[u] - dep[v]) u = par[u][k];
   }
-  if (a == b) return a;
-  for (int i=19; i>=0; i--) {
-    if (anc[i][a] != anc[i][b]) {
-      a = anc[i][a];
-      b = anc[i][b];
+
+  if (u == v) return u;
+
+  for (int k=19; k>=0; k--) {
+    if (par[u][k] != par[v][k]) {
+      u = par[u][k];
+      v = par[v][k];
     }
   }
-  return anc[0][a];
+
+  return par[u][0];
 }
 
 int main() {
@@ -44,23 +45,23 @@ int main() {
 
   cin >> N;
   for (int i=0; i<N-1; i++) {
-    int a, b; cin >> a >> b;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+    int u, v; cin >> u >> v;
+    adj[u].push_back(v);
+    adj[v].push_back(u);
   }
 
   dfs(1, 0, 0);
 
-  for (int i=1; i<20; i++) {
-    for (int u=1; u<=N; u++) {
-      anc[i][u] = anc[i-1][anc[i-1][u]];
+  for (int k=1; k<20; k++) {
+    for (int i=1; i<=N; i++) {
+      par[i][k] = par[par[i][k-1]][k-1];
     }
   }
 
   cin >> M;
   for (int i=0; i<M; i++) {
-    int a, b; cin >> a >> b;
-    cout << query(a, b) << endl;
+    int u, v; cin >> u >> v;
+    cout << lca(u, v) << endl;
   }
 
   ////////////////////////////////
