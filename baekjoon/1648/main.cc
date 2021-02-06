@@ -7,19 +7,25 @@ using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
 const int MOD = 9901;
-const int MAXN = 15;
-const int MAXP = (1 << 14);
-int N, M, D[MAXN][MAXP];
+const int MN = 15;
+int N, M, D[MN*MN][1<<MN];
 
-void dp(int prv, int nxt, int m, int n) {
-  if (m == M) {
-    D[n][nxt] = (D[n][nxt] + D[n-1][prv]) % MOD;
-    return;
-  }
+int dp(int i, int state) {
+  if (i == N*M) return state == 0;
+  if (D[i][state] != -1) return D[i][state];
 
-  dp(prv | (1<<m), nxt, m+1, n);
-  dp(prv, nxt | (1<<m), m+1, n);
-  if (M - m >= 2) dp(prv, nxt, m+2, n);
+  D[i][state] = 0;
+
+  if (state & 1) // occupied
+    D[i][state] += dp(i+1, state >> 1);
+
+  if ((state & 1) == 0) // vertical
+    D[i][state] += dp(i+1, state >> 1 | 1 << M-1);
+
+  if (i%M != M-1 && (state & 3) == 0) // horizontal
+    D[i][state] += dp(i+1, (state >> 1) + 1);
+
+  return D[i][state] = D[i][state] % MOD;;
 }
 
 int main() {
@@ -28,13 +34,8 @@ int main() {
   ////////////////////////////////
 
   cin >> N >> M;
-
-  D[0][0] = 1;
-  for (int i=1; i<=N; i++) {
-    dp(0, 0, 0, i);
-  }
-
-  cout << D[N][0] << endl;
+  for (int i=0; i<N*M; i++) fill(D[i], D[i] + (1<<M), -1);
+  cout << dp(0, 0) << endl;
 
   ////////////////////////////////
   return 0;
