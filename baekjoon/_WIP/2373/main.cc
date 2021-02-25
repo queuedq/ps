@@ -17,13 +17,12 @@ int main() {
 
   cin >> N;
 
-  for (int i=2; i<=N; i++) {
+  for (int i=1; i<=N; i++) {
     cout << i/10 << i%10 << " ";
-    for (int j=1; j<i; j++) {
-      D[i][j] = false;
-      for (int t=1; t<=j; t++) {
-        if (i-t <= t*2) break;
-        if (D[i-t][t*2] == false) D[i][j] = true;
+    for (int j=1; j<=i; j++) {
+      D[i][j] = true;
+      for (int t=1; t <= j*2 && t <= i-j; t++) {
+        if (D[i-j][t]) D[i][j] = false;
       }
       cout << D[i][j];
     }
