@@ -49,11 +49,11 @@ void parseCond(int i, int j) {
   string v1 = S.substr(i, k-i);
   string v2 = S.substr(k+2, j-k-2);
 
-  if (varId.find(v1) == varId.end()) {
+  if (varId.count(v1) == 0) {
     varId[v1] = var.size();
     var.push_back(v1);
   }
-  if (varId.find(v2) == varId.end()) {
+  if (varId.count(v2) == 0) {
     varId[v2] = var.size();
     var.push_back(v2);
   }
@@ -75,6 +75,7 @@ void parse() {
 
 ////////////////////////////////
 
+const string TAUTOLOGY = "0==0";
 const string CONTRADICTION = "0!=0";
 bool isNum(string s) { return s[0] == '-' || ('0' <= s[0] && s[0] <= '9'); }
 
@@ -96,10 +97,6 @@ string solve() {
     int r = var[r1].size() < var[r2].size() ? r1 : r2;
     D.merge(c.v1, c.v2);
     getRep(c.v1) = r;
-  }
-  for (int i=0; i<var.size(); i++) {
-    // cout << var[i] << "->" << var[getRep(i)] << endl;
-    assert(var[getRep(i)].size() <= var[i].size());
   }
 
   // Contradiction check 1
@@ -144,6 +141,8 @@ string solve() {
   }
 
   // Return
+  if (ans.size() == 0) return TAUTOLOGY;
+
   string ansStr = "";
   for (int i=0; i<ans.size(); i++) {
     Condition c = ans[i];
@@ -163,11 +162,6 @@ int main() {
 
   cin >> S;
   parse();
-  // for (int i=0; i<var.size(); i++) {
-  //   cout << i << ": " << var[i] << " " << isNum(var[i]) << endl;
-  //   assert(varId[var[i]] == i);
-  // }
-
   cout << solve() << endl;
 
   ////////////////////////////////
