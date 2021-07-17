@@ -8,23 +8,24 @@ using pll = pair<lld, lld>;
 ////////////////////////////////////////////////////////////////
 const int ST = 1<<19;
 const lld MOD = 1e9+7;
-lld G = 1, k[ST], g0 = 0;
+lld G = 1, k[ST];
 
 struct Node {
   lld a, b; // ax+b
-  bool o; // overflow bit
+  bool oa = 0, ob = 0; // overflow bit
 
-  Node(): a(1), b(0), o(0) { }
-  Node(lld a, lld b): a(a), b(b), o(0) { }
-  Node(lld a, lld b, bool o): a(a), b(b), o(o) { }
+  Node(): a(1), b(0) { }
+  Node(lld a, lld b): a(a), b(b) { }
+  Node(lld a, lld b, bool oa, bool ob): a(a), b(b), oa(oa), ob(ob) { }
 
   lld apply(lld x) { return (a * x + b) % MOD; }
 
   Node operator +(Node x) {
     lld A = x.a * a;
     lld B = x.a * b + x.b;
-    bool O = o || x.o || A >= MOD || B >= MOD;
-    return Node(A % MOD, B % MOD, O);
+    bool OA = oa || x.oa || A >= MOD;
+    bool OB = ob || x.ob || B >= MOD || (b > 0 && x.oa);
+    return Node(A % MOD, B % MOD, OA, OB);
   }
 };
 
@@ -46,11 +47,22 @@ void upd(int i, Node x) {
 
 bool check(int g, lld x) {
   Node op = qry(g+1, G-1);
-  if (op.o) return false;
+  if (op.ob) return false;
   x -= op.b;
   if (x < 0) return false;
-  if (x % op.a != 0) return false;
+  if (x == 0) return true;
+  if (op.oa || x % op.a != 0) return false;
   return true;
+}
+
+int at_room(lld x) {
+  int l = -1, r = G-1;
+  while (l+1 < r) {
+    int mid = (l+r)/2;
+    if (check(mid, x)) r = mid;
+    else l = mid;
+  }
+  return r;
 }
 
 int main() {
@@ -59,6 +71,7 @@ int main() {
   ////////////////////////////////
 
   fill(seg, seg+ST*2, Node());
+  k[0] = 1;
 
   int Q; cin >> Q;
   for (int q=0; q<Q; q++) {
@@ -66,33 +79,22 @@ int main() {
     if (t == 1) {
       cin >> k[G];
 
-      if (k[G] == 0) {
-        upd(G, Node(2, 0));
-      } else {
-        upd(G, Node(1, k[G]));
-        g0 = G; // manage group at pos 0 b/c overflow check does not work here
-      }
+      if (k[G] == 0) upd(G, Node(2, 0));
+      else upd(G, Node(1, k[G]));
       G++;
+
     } else if (t == 2) {
       lld g, x; cin >> g >> x;
-
       x--; // 0-index
+
       if (k[g] == 0) x = x*2+1;
       Node op = qry(g+1, G-1);
       cout << op.apply(x) << endl;
+
     } else {
       lld x; cin >> x;
-      if (x == 0) {
-        cout << g0 << endl;
-      } else {
-        int l = -1, r = G-1;
-        while (l+1 < r) {
-          int mid = (l+r)/2;
-          if (check(mid, x)) r = mid;
-          else l = mid;
-        }
-        cout << r << endl;
-      }
+
+      cout << at_room(x) << endl;
     }
   }
 
