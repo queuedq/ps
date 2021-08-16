@@ -6,14 +6,14 @@ using pii = pair<int, int>;
 using pll = pair<lld, lld>;
 
 ////////////////////////////////////////////////////////////////
-int N, D[100];
+int N, D[10005], E[10005];
 
 int main() {
   ios_base::sync_with_stdio(false);
   cin.tie(nullptr);
   ////////////////////////////////
 
-  cin >> N;
+  N = 10000;
 
   for (int i=1; i<=N; i++) {
     D[i] = i;
@@ -23,8 +23,20 @@ int main() {
       D[i] = min(D[i], D[i-(1<<j)+1] + j);
       assert(tmp >= D[i]);
     }
+  }
 
-    cout << i << " " << D[i] << endl;
+  for (int i=1; i<=N; i++) {
+    int x = i;
+    for (int j=31; j>0; j--) {
+      while ((1<<j)-1 <= x) {
+        x -= (1<<j)-1;
+        E[i] += j;
+      }
+    }
+  }
+
+  for (int i=1; i<=N; i++) {
+    if (D[i] != E[i]) cout << "DIFFERENT " << i << endl;
   }
 
   ////////////////////////////////
