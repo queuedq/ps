@@ -30,7 +30,7 @@ int main() {
       pll I = dq.back();
       last = {I.X, i};
       dq.pop_back();
-      S.erase(H[I.Y] + D[I.X-1]);
+      S.erase(S.find(H[I.Y] + D[I.X-1]));
     }
     dq.push_back(last);
     S.insert(H[last.Y] + D[last.X-1]);
@@ -41,11 +41,11 @@ int main() {
       pll I = dq.front();
       if (I.X == I.Y) {
         dq.pop_front();
-        S.erase(H[I.Y] + D[I.X-1]);
+        S.erase(S.find(H[I.Y] + D[I.X-1]));
       } else {
         pll J = {I.X+1, I.Y};
         dq.front() = J;
-        S.erase(H[I.Y] + D[I.X-1]);
+        S.erase(S.find(H[I.Y] + D[I.X-1]));
         S.insert(H[J.Y] + D[J.X-1]);
       }
       wsum -= W[I.X];
