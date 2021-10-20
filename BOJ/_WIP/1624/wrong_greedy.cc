@@ -73,7 +73,7 @@ int main() {
 
   for (int i=0; i<N; i++) {
     bool pushed = false;
-    for (auto dq: dqs) {
+    for (auto &dq: dqs) {
       if (pushed = dq.push_left(A[i])) break;
       if (pushed = dq.push_right(A[i])) break;
     }
