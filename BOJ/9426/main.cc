@@ -29,7 +29,7 @@ int main() {
 
   for (int i=K; i<N; i++) {
     // Remove old
-    if (pll(A[i-K], i) <= mid) l--;
+    if (pll(A[i-K], i-K) <= mid) l--;
     else r--;
 
     // Push new
