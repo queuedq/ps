@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #define endl "\n"
+#define all(x) (x).begin(), (x).end()
 using namespace std;
 using lld = long long;
 using pii = pair<int, int>;
@@ -35,29 +36,29 @@ struct DSU {
 ////////////////////////////////
 const int MAXN = 3e5+5;
 lld N, L, R;
-vector<pll> A, range;
+vector<pll> A;
+vector<lld> hs;
 bool vst[MAXN];
 
 lld sum(lld s, lld e) { return (s+e)*(e-s+1)/2; }
 
-// Number of rectangles with width = w in ith bucket
-lld cnt(lld i, lld w) {
-  auto [l, r] = range[i];
-  l = min(l, w-1); r = min(r, w-1);
-  return max(0LL, r - (w-l-1) + 1);
+lld cnt_width(lld W, lld mw) {
+  // number of itv of width <= mw contained in itv of width W
+  lld ret = W * (W+1) / 2;
+  if (mw <= W) ret -= (W-mw) * (W-mw+1) / 2;
+  return ret;
 }
 
-// Number of rectangles with width <= w in ith bucket
-lld cntSum(lld i, lld w) {
-  auto [l, r] = range[i];
-  l = min(l, w-1); r = min(r, w-1);
-  if (w-l-1 <= r) return sum(w-l, r+1) + (r+1)*(w-r-1);
-  return (r+1)*(l+1);
-}
-
-lld total(lld area) {
-  lld ret = 0;
-  for (int i=0; i<N; i++) ret += cntSum(i, area/A[i].first);
+lld cnt_area(lld area) { // number of rect <= area
+  lld ret = 0, i = 0;
+  for (auto h: hs) {
+    lld mw = area/h; // max width
+    int x = 0;
+    ret += cnt_width(N, mw); // TODO: fix
+    for (; i<N && A[i].first == h; i++) {
+      ret -= cnt_width(A[i].second, mw);
+    }
+  }
   return ret;
 }
 
@@ -70,25 +71,14 @@ int main() {
   for (int i=1; i<=N; i++) {
     lld h; cin >> h;
     A.push_back({h, i});
+    hs.push_back(h);
   }
   cin >> L >> R;
 
   // Sort by decreasing height
-  sort(A.rbegin(), A.rend());
-
-  // Find width ranges per bucket
-  // range {l, r}: width can extend l units left and r units right
-  DSU dsu(N+5);
-  for (int i=0; i<N; i++) {
-    auto [h, j] = A[i];
-    vst[j] = true;
-    if (vst[j-1]) dsu.merge(j, j-1);
-    if (vst[j+1]) dsu.merge(j, j+1);
-    range.push_back({
-      j - dsu.l[dsu.find(j)],
-      dsu.r[dsu.find(j)] - j
-    });
-  }
+  sort(all(A));
+  sort(all(hs));
+  hs.erase(unique(all(hs)), hs.end());
 
   // Find Lth area
   // total(s) < L <= total(e), e is Lth area
