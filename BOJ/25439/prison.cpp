@@ -14,7 +14,7 @@ const int base[8] = {0, 2, 3, 3, 3, 3, 3, 3};
 int D[8], id[8][3], last, A[21][MN];
 
 void solve(int n, int s, int e, int l, int r, int d) {
-  // n: prev group id on whiteboard
+  // n: prev group id
   // [s, e): prev coin's range
   // [l, r): current coin's range (contains [s, e), length D[d])
   int bag = A[n][0] = d%2;
@@ -24,7 +24,7 @@ void solve(int n, int s, int e, int l, int r, int d) {
 
   // divide [s+1, e-1) into 2 or 3 groups
   for (int j=0; j<base[d]; j++) {
-    int m = id[d][j]; // group id to write on whiteboard
+    int m = id[d][j]; // group id
     int gl = s+1 + D[d-1]*j, gr = gl + D[d-1]; // group's range
 
     for (int i=gl; i<gr; i++) A[n][i] = m; // write group id
@@ -39,7 +39,7 @@ vector<vector<int>> devise_strategy(int N) {
     for (int j=0; j<base[d]; j++) id[d][j] = ++last;
   }
 
-  solve(0, 1, N+1, 1, N+1, 7);
+  solve(0, 1, D[7]+1, 1, D[7]+1, 7);
 
   vector<vector<int>> ans;
   for (int i=0; i<=20; i++) ans.push_back(vector(A[i], A[i]+N+1));
