@@ -1,0 +1,7 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 2
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLoopsOnASingleLine: true
+...
