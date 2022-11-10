@@ -1,6 +1,6 @@
 {
 	"template": {
-		"prefix": "tmpl",
+		"prefix": "ps",
 		"body": [
 			"#include <bits/stdc++.h>",
 			"#define endl \"\\n\"",
@@ -29,7 +29,7 @@
 		"description": "default template"
 	},
 	"template_test_cases": {
-		"prefix": "ttmpl",
+		"prefix": "ps-tests",
 		"body": [
 			"#include <bits/stdc++.h>",
 			"#define endl \"\\n\"",

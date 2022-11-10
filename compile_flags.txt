@@ -1,0 +1,4 @@
+-Wall
+-Wextra
+-Werror=return-type
+-std=c++17
