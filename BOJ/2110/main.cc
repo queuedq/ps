@@ -18,7 +18,7 @@ int main() {
   for (int i=0; i<N; i++) cin >> x[i];
   sort(x, x+N);
 
-  int l = 0, r = 1e9;
+  int l = 0, r = 1e9+1;
   while (l+1 < r) {
     int mid = (l+r)/2;
 
