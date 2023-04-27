@@ -35,14 +35,14 @@ int main() {
   lld best = INT_MAX;
   set<pii> cand;
   for (int i=0; i<N; i++) {
-    while (P[i].first - P[j].first > best) {
+    while (P[i].first - P[j].first > sqrt(best)) {
       cand.erase(reverse(P[j]));
       j++;
     }
 
     if (!cand.empty()) {
       auto it = cand.lower_bound({P[i].second-sqrt(best)-1, INT_MIN});
-      while (it != cand.end() && it->first < P[i].second+sqrt(best)+1) {
+      while (it != cand.end() && it->first <= P[i].second+sqrt(best)+1) {
         lld d = dist(P[i], reverse(*it));
         if (d < best) best = d;
         it++;
