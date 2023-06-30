@@ -13,7 +13,7 @@ const int MM = 305;
 int N, K, M, D[MK][MM];
 
 struct Node {
-  Node *next[26], *par, *link, *go[26];
+  Node *next[3], *par, *link, *go[3];
   int ch, cnt;
   int idx;
 
@@ -64,7 +64,7 @@ int main() {
     
     n->link = link(n);
     n->cnt += n->link->cnt;
-    for (int i=0; i<26; i++) {
+    for (int i=0; i<3; i++) {
       n->go[i] = go(n, i);
       if (n->next[i]) Q.push(n->next[i]);
     }
@@ -76,7 +76,7 @@ int main() {
   for (int i=K; i>=0; i--) {
     for (int j=0; j<M; j++) {
       Node *n = nodes[j];
-      for (int k=0; k<26; k++) {
+      for (int k=0; k<3; k++) {
         D[i][j] = max(D[i][j], D[i+1][n->go[k]->idx] + n->cnt);
       }
     }
