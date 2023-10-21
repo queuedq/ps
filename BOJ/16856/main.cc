@@ -10,8 +10,6 @@ using pll = pair<lld, lld>;
 ////////////////////////////////////////////////////////////////
 const int MN = 101010;
 int Q;
-
-
 int X[MN], Y[MN], cnt[MN]; // cnt: number of blocks below it + itself
 int L[MN][20], R[MN][20]; // next node sparse table
 int top[MN*4]; // topmost block id
