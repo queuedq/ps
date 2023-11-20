@@ -10,13 +10,11 @@ while True:
 
   p = Popen(['./main'], stdout=PIPE, stdin=PIPE)
   main = p.communicate(input=data)[0]
-  # print(str(main))
-  # print()
+  # print(str(main)[:20])
 
   p = Popen(['./naive'], stdout=PIPE, stdin=PIPE)
   naive = p.communicate(input=data)[0]
-  # print(str(naive))
-  # print()
+  # print(str(naive)[:20])
 
   # print(main == naive)
 
@@ -28,6 +26,7 @@ while True:
     print(naive)
     break
 
-  if t % 100 == 0:
-    print(f'{t} tries')
   t += 1
+  print(f'{t} tries')
+  # if t % 100 == 0:
+  #   print(f'{t} tries')
