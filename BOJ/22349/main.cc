@@ -56,21 +56,67 @@ vector<int> lcp_array(string &S, vector<int> &sa) {
   return lcp;
 }
 
+////////////////////////////////////////////////////////////////
+const int MN = 505050;
+int H[MN];
+vector<int> pos[MN];
+
+void solve() {
+  string A, B; cin >> A >> B;
+  int n = sz(A), m = sz(B);
+
+  // get heights
+  int mn = 0;
+  H[0] = 0;
+  for (int i=1; i<=n; i++) {
+    H[i] = H[i-1] + (A[i-1] == '(' ? 1 : -1);
+    mn = min(mn, H[i]);
+  }
+  for (int i=0; i<=n; i++) {
+    H[i] -= mn-1;
+    pos[H[i]].push_back(i);
+  }
+
+  // get sa
+  string S = A + '#' + B;
+  auto sa = suffix_array(S);
+  auto lcp = lcp_array(S, sa);
+
+  // solve
+  int ans = 0;
+  for (int j=1; j<n+m+1; j++) {
+    // find index in A
+    int i = -1;
+    if (sa[j-1] < n && sa[j] >= n+1) i = sa[j-1];
+    if (sa[j-1] >= n+1 && sa[j] < n) i = sa[j];
+    if (i == -1) continue;
+
+    auto &p0 = pos[H[i]], &p1 = pos[H[i]-1];
+
+    // lim = min(lcp, closest lowering point)
+    int lim = lcp[j];
+    auto it = upper_bound(all(p1), i);
+    if (it != p1.end()) lim = min(lim, *it-i);
+
+    // len = furthest level point
+    it = prev(upper_bound(all(p0), i+lim));
+    int len = *it-i;
+    ans = max(ans, len);
+  }
+
+  cout << ans << endl;
+
+  // reset
+  for (int i=0; i<n+2; i++) pos[i].clear();
+}
+
 int main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0);
   ////////////////////////////////
 
-  string S; cin >> S;
-  int N = sz(S);
-  auto sa = suffix_array(S);
-  auto lcp = lcp_array(S, sa);
-
-  for (int i=0; i<N; i++) cout << sa[i]+1 << ' ';
-  cout << endl;
-  cout << "x ";
-  for (int i=1; i<N; i++) cout << lcp[i] << ' ';
-  cout << endl;
+  int T; cin >> T;
+  while (T--) solve();
 
   ////////////////////////////////
   return 0;
