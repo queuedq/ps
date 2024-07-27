@@ -24,7 +24,7 @@ void solve() {
     if (X[i]) cnt[X[i]]++;
   }
 
-  memset(***D, 0, (MN*2)*MN*MN*2);
+  memset(D, 0, sizeof(D));
   D[0][0][0][0] = 1;
 
   for (int i=1; i<=N*2; i++) {
