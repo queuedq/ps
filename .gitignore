@@ -5,6 +5,9 @@
 unsolved-*
 a.out
 
+# submodules
+!pslib
+
 
 # Created by https://www.gitignore.io/api/macOS,python
 
