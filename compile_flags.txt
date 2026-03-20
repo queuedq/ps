@@ -2,3 +2,4 @@
 -Wextra
 -Werror=return-type
 -std=c++17
+-xc++
