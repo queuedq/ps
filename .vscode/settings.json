@@ -101,9 +101,10 @@
   "files.watcherExclude": {
     "**/target": true
   },
+  "bojSync.enable": true,
   "bojSync.bojHandle": "queued_q",
   "bojSync.solutionDirectory": "BOJ/{problemId}",
   "bojSync.languageFileNames": {
     "C++17": "main.cc"
-  },
+  }
 }
