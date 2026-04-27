@@ -105,6 +105,7 @@
   "bojSync.bojHandle": "queued_q",
   "bojSync.solutionDirectory": "BOJ/{problemId}",
   "bojSync.languageFileNames": {
-    "C++17": "main.cc"
+    "C++17": "main.cc",
+    "Text": "main.txt"
   }
 }
